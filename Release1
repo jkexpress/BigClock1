@@ -1,0 +1,188 @@
+// 4 digit clock cycle test
+// 10 Sept 2019 - change lengths and test patter and reset clock and drop brightness - spacing not bad - 11 dots on some bars??
+//
+#include <Adafruit_NeoPixel.h>
+#include "GravityRtc.h"
+#include "Wire.h"  
+// Compiled  for UNO port USB 4
+
+int hours  ;
+int mins  ;
+  #define PIN  6
+  #define STRIP  10
+  #define START 0
+  #define GAP 4; // not used yet
+  //define where each digit sarts
+  #define DIGIT  7*STRIP 
+  #define NUM2  (STRIP*7)  +4
+  #define NUM3  156
+  #define NUM4  230
+  #define DOTSLENGTH 6 //
+  #define DOTS (NUM3-8) 
+  #define DOTS2  (DOTS+2)
+  // total LEDs
+  #define NUMPIXELS 150*2
+  #define BRIGHT 255
+
+GravityRtc rtc;     //RTC Initialization
+Adafruit_NeoPixel pixels = Adafruit_NeoPixel(NUMPIXELS, PIN, NEO_GRB + NEO_KHZ800);
+
+void setup()
+{
+ rtc.setup();
+ pixels.begin();
+}
+
+
+void loop()
+{
+
+// --- clock start
+  rtc.read();
+  hours=rtc.hour;
+  {
+   if (hours>12)
+     {
+      hours = hours-12;
+     }
+  }
+  mins = rtc.minute;
+// -- clock fin
+
+
+drawdigit(0,BRIGHT,0,0,hours/10);                       //Draw the first digit of the hour
+drawdigit(NUM2,BRIGHT,0,0,hours-((hours/10)*10));       //Draw the second digit of the hour
+//replaced dots with a loop
+for (int i = 0; i <= DOTSLENGTH; i++) {
+pixels.setPixelColor(i+DOTS, pixels.Color(0,0,BRIGHT));
+}
+drawdigit(NUM3,BRIGHT,0,0,mins/10);                     //Draw the first digit of the minute
+drawdigit(NUM4,BRIGHT,0,0,mins-((mins/10)*10));         //Draw the second digit of the minute
+delay(10000);
+/* Test loop
+// =============== test pattern ==================
+drawdigit(0,BRIGHT,0,0,5);                              //Draw the first digit of the hour
+drawdigit(NUM2,BRIGHT,0,0,5);                           //Draw the second digit of the hour
+//replaced dots with a loop
+for (int i = 0; i <= DOTSLENGTH; i++) {
+pixels.setPixelColor(i+DOTS, pixels.Color(0,0,BRIGHT));
+}
+drawdigit(NUM3,BRIGHT,0,0,5);                     //Draw the first digit of the minute
+drawdigit(NUM4,BRIGHT,0,0,5);         //Draw the second digit of the minute
+delay(10000);                                         //delay 1s ms
+drawdigit(0,BRIGHT,0,0,2);                       //Draw the first digit of the hour
+drawdigit(NUM2,BRIGHT,0,0,2);       //Draw the second digit of the hour
+//replaced dots with a loop
+for (int i = 0; i <= DOTSLENGTH; i++) {
+pixels.setPixelColor(i+DOTS, pixels.Color(0,0,BRIGHT));
+}
+drawdigit(NUM3,BRIGHT,0,0,2);                     //Draw the first digit of the minute
+drawdigit(NUM4,BRIGHT,0,0,2);         //Draw the second digit of the minute
+delay(10000);
+*/
+}
+
+
+// ====================== END LOOP =========================
+void drawdigit(int offset, int r, int g, int b, int n)
+{
+
+if (n==2 || n==3 || n== 4 || n==5 || n==6 || n==8 || n==9 )//MIDDLE 1
+{
+for (int i = 0; i <= STRIP; i++) {
+pixels.setPixelColor(i+offset, pixels.Color(r,g,b));
+}
+
+}
+else
+{
+for (int i = 0; i <= STRIP; i++) {
+pixels.setPixelColor(i+offset, pixels.Color(0,0,0));
+}
+}
+if (n==0 || n==1 || n== 2 || n==3 || n==4 || n==7 || n==8 || n==9)//TOP RIGHT 2
+{
+
+for (int i = STRIP; i <= (2*STRIP); i++) {
+pixels.setPixelColor(i+offset, pixels.Color(r,g,b));
+}
+}
+else
+{
+
+for (int i = STRIP; i <= (2*STRIP); i++) {
+pixels.setPixelColor(i+offset, pixels.Color(0,0,0));
+}
+}
+if (n==0 || n==2 || n== 3 || n==5 || n==6 || n==7 || n==8 || n==9)//TOP 3
+{
+
+for (int i = 2*STRIP; i <= (3*STRIP); i++) {
+pixels.setPixelColor(i+offset, pixels.Color(r,g,b));
+}
+}
+else
+{
+
+for (int i = 2*STRIP; i <= (3*STRIP); i++) {
+pixels.setPixelColor(i+offset, pixels.Color(0,0,0));
+}
+}
+if (n==0 || n==4 || n==5 || n== 6 || n==8 || n==9 )//TOP LEFT 4
+{
+
+for (int i = 3*STRIP; i <= (4*STRIP); i++) {
+pixels.setPixelColor(i+offset, pixels.Color(r,g,b));
+}
+}
+else
+{
+
+for (int i = 3*STRIP; i <= (4*STRIP); i++) {
+pixels.setPixelColor(i+offset, pixels.Color(0,0,0));
+}
+}
+if (n==0 || n==2 || n==6 || n== 8)//BOTTOM LEFT 5
+{
+
+for (int i = 4*STRIP; i <= (5*STRIP); i++) {
+pixels.setPixelColor(i+offset, pixels.Color(r,g,b));
+}
+}
+else
+{
+
+for (int i = 4*STRIP; i <= (5*STRIP); i++) {
+pixels.setPixelColor(i+offset, pixels.Color(0,0,0));
+}
+}
+if (n==0 || n==2 || n==3 || n== 5 || n==6 || n==8 || n==9)//BOTTOM 6
+{
+
+for (int i = 5*STRIP; i <= (6*STRIP); i++) {
+pixels.setPixelColor(i+offset, pixels.Color(r,g,b));
+}
+}
+else
+{
+
+for (int i = 5*STRIP; i <= (6*STRIP); i++) {
+pixels.setPixelColor(i+offset, pixels.Color(0,0,0));
+}
+}
+if (n==0 || n==1 || n==3 || n==4 || n==5 || n==6|| n==7 || n==8 || n==9)//BOTTOM RIGHT 7
+{
+
+for (int i = 6*STRIP; i <= (7*STRIP); i++) {
+pixels.setPixelColor(i+offset, pixels.Color(r,g,b));
+}
+}
+else
+{
+
+for (int i = 6*STRIP; i <= (7*STRIP); i++) {
+pixels.setPixelColor(i+offset, pixels.Color(0,0,0));
+}
+}
+pixels.show();
+}
