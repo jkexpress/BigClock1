@@ -2,7 +2,7 @@
 LED Clock for exams
 
 RTC, Arduino UNO, 5V high power, 2 strings of ADAfruit Neopixel LED ropes. 
-Rewrite of hard coded instructable. thanks to 
+Rewrite of hard coded instructable. thanks to https://www.ivanmiranda.com/diy-big-digital-clock
 
 pending changes
 RTC correction as set time is delayed after compile. 
