@@ -1,5 +1,5 @@
 // JK pushed GMT to RTC changing to AEST Arduino Timezone Library Copyright (C) 2018 by Jack Christensen and
-// lost 30 minutes 2020 09 25 1121
+// lost 30 minutes 2020 09 25 1121 - mem board is not stable. 
 // doesnt set time.
 // licensed under GNU GPL v3.0, https://www.gnu.org/licenses/gpl.html
 //
